@@ -205,3 +205,43 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon\r
+._*
+.Spotlight-V100/
+.Trashes/
+.fseventsd/
+.DocumentRevisions-V100/
+.TemporaryItems/
+.AppleDB
+.AppleDesktop
+
+# Windows
+# Thumbnails, recycle bin, desktop ini and common temp files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+Thumbs.db:encryptable
+
+# Linux and Unix
+# Common editor/backup/temp files, NFS
+*~
+.*~
+.~lock.*
+.nfs*
+.cache/
+.directory
+
+# Editor/OS swap and backup files (cross-platform)
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+*.rej
