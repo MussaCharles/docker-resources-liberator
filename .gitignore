@@ -56,10 +56,15 @@ cover/
 *.pot
 
 # Django stuff:
-*.log
+# *.log  # Commented out - we need logs/ directory
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+
+# Docker Resources Liberator specific
+logs/*.log
+tests/test_logs/
+liberate.sh.backup
 
 # Flask stuff:
 instance/

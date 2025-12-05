@@ -6,19 +6,24 @@ A modular bash script to find and remove Docker resources (images, containers, v
 
 - **Search & Destroy**: Find all Docker resources matching a keyword
 - **Comprehensive Cleanup**: Handles images, containers, volumes, and networks
-- **Resource Logging**: Logs system resources before and after cleanup
 - **Dry Run Mode**: Preview what would be deleted without making changes
 - **Auto-Confirm Mode**: Skip confirmation prompt for scripted/automated use
-- **Detailed Logs**: Persistent log files with timestamps for auditing
+- **Optional Logging**: Save detailed log files for auditing when needed
 
 ## Project Structure
 
 ```
 docker-resources-liberator/
-├── liberate.sh     # Main script
-├── logs/           # Log files directory
-│   └── <search_term>_YYYYMMDD_HHMMSS.log
-└── README.md       # This file
+├── liberate.sh           # Main entry point
+├── src/                  # Modular source files
+│   ├── config.sh         # Configuration & global variables
+│   ├── helpers.sh        # Output formatting & logging
+│   ├── resources.sh      # System resource tracking
+│   ├── discovery.sh      # Docker resource discovery
+│   └── cleanup.sh        # Docker resource cleanup
+├── tests/                # Unit tests (bats)
+├── logs/                 # Log files (when --log is used)
+└── README.md             # This file
 ```
 
 ## Installation
@@ -47,6 +52,7 @@ docker-resources-liberator/
 |--------|-------------|
 | `-y, --yes` | Skip confirmation prompt (auto-confirm deletion) |
 | `-d, --dry-run` | Show what would be deleted without actually deleting |
+| `-l, --log` | Save output to a log file in logs/ directory |
 | `-h, --help` | Show help message |
 
 ### Examples
@@ -61,33 +67,36 @@ docker-resources-liberator/
 # Auto-confirm deletion (useful for scripts)
 ./liberate.sh myproject -y
 
+# Save a log file for auditing
+./liberate.sh myproject --log
+
 # Combine options
-./liberate.sh myproject --dry-run -y
+./liberate.sh myproject --dry-run -y --log
 ```
 
 ## Creating Project-Specific Wrapper Scripts
 
-You can create simple wrapper scripts for frequently cleaned projects. For example, to create a script for cleaning SOFC resources:
+You can create simple wrapper scripts for frequently cleaned projects. For example, to create a script for cleaning foo resources:
 
-### Example: `~/prune_sofc_docker.sh`
+### Example: `~/prune_foo_docker.sh`
 
 ```bash
 #!/bin/bash
-# Wrapper script to clean SOFC Docker resources
+# Wrapper script to clean foo Docker resources
 
-~/docker-resources-liberator/liberate.sh sofc "$@"
+~/docker-resources-liberator/liberate.sh foo "$@"
 ```
 
 Then make it executable:
 ```bash
-chmod +x ~/prune_sofc_docker.sh
+chmod +x ~/prune_foo_docker.sh
 ```
 
 Now you can simply run:
 ```bash
-~/prune_sofc_docker.sh           # Interactive mode
-~/prune_sofc_docker.sh --dry-run # Preview mode
-~/prune_sofc_docker.sh -y        # Auto-confirm mode
+~/prune_foo_docker.sh           # Interactive mode
+~/prune_foo_docker.sh --dry-run # Preview mode
+~/prune_foo_docker.sh -y        # Auto-confirm mode
 ```
 
 ## What Gets Cleaned
@@ -112,7 +121,9 @@ Resources are removed in a specific order to handle dependencies:
 
 ## Log Files
 
-Log files are automatically created in the `logs/` directory with the naming format:
+Logging is **disabled by default**. Use `-l` or `--log` to enable it.
+
+When enabled, log files are created in the `logs/` directory with the naming format:
 
 ```
 <search_term>_YYYYMMDD_HHMMSS.log
@@ -127,10 +138,11 @@ Log files are automatically created in the `logs/` directory with the naming for
 - System resources after cleanup
 - Resource comparison (space freed)
 
-### Example Log Location
+### Example
 
-```
-~/docker-resources-liberator/logs/sofc_20241215_143022.log
+```bash
+./liberate.sh myproject --log
+# Creates: ~/docker-resources-liberator/logs/myproject_20241215_143022.log
 ```
 
 ## System Resources Tracked
@@ -147,27 +159,27 @@ Log files are automatically created in the `logs/` directory with the naming for
 1. **Confirmation Prompt**: By default, requires explicit `y` confirmation
 2. **Dry Run Mode**: Test what would happen without making changes
 3. **Case-Insensitive Search**: Catches variations in naming
-4. **Detailed Logging**: Full audit trail of all operations
+4. **Optional Logging**: Enable audit trail when needed with `--log`
 5. **Error Handling**: Reports failed deletions without stopping
 
 ## Requirements
 
 - Bash 4.0+
 - Docker CLI installed and accessible
-- `sudo` access (optional, for volume size calculation)
-- Standard Unix utilities: `awk`, `grep`, `sed`, `df`, `free`
+- Standard Unix utilities: `awk`, `grep`, `sed`, `df`
+- Works on both macOS and Linux
 
 ## Tips
 
 - Run with `--dry-run` first to preview what will be deleted
-- Check the log files for detailed information about each run
+- Use `--log` when you need an audit trail
 - Use `docker system prune` after running for additional cleanup
 - Create wrapper scripts for projects you clean frequently
 
 ## Troubleshooting
 
-### "Permission denied" errors
-Some volume operations may require `sudo`. The script will still work but may show "unknown" for volume sizes.
+### Volume sizes not showing
+On macOS with Docker Desktop, volume sizes are retrieved from Docker's internal data. If sizes show as "N/A", ensure Docker is running.
 
 ### Resources not being deleted
 - Check if containers are still running (they'll be force-stopped)
