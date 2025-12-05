@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 # =============================================================================
-# Tests for Discovery Functions (lib/discovery.sh)
+# Tests for Discovery Functions (src/discovery.sh)
 # =============================================================================
 
 # Load test helpers

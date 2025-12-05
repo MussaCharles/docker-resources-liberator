@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 # =============================================================================
-# Tests for Helper Functions (lib/helpers.sh)
+# Tests for Helper Functions (src/helpers.sh)
 # =============================================================================
 
 # Load test helpers
@@ -58,8 +58,8 @@ teardown() {
 }
 
 @test "log_to_file creates log entry" {
+    export ENABLE_LOG=true
     export LOG_FILE="${LOG_DIR}/test.log"
-    touch "$LOG_FILE"
 
     log_to_file "Test log message"
 

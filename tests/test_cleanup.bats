@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 # =============================================================================
-# Tests for Cleanup Functions (lib/cleanup.sh)
+# Tests for Cleanup Functions (src/cleanup.sh)
 # =============================================================================
 
 # Load test helpers
@@ -107,6 +107,7 @@ export -f mock_docker_networks
 }
 
 @test "cleanup functions log to file" {
+    export ENABLE_LOG=true
     cleanup_containers
     grep -q "DRY RUN" "$LOG_FILE"
     grep -q "myproject" "$LOG_FILE"

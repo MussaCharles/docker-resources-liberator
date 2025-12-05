@@ -32,20 +32,20 @@ Shared test utilities and helper functions:
 - `assert_contains()` / `assert_not_contains()` - Custom assertion helpers
 
 ### test_helpers.bats
-Tests for helper functions (lib/helpers.sh):
+Tests for helper functions (src/helpers.sh):
 - Output formatting functions (print_header, print_section, etc.)
 - Logging functionality
 - Usage/help message display
 
 ### test_discovery.bats
-Tests for discovery functions (lib/discovery.sh):
+Tests for discovery functions (src/discovery.sh):
 - Finding images, containers, volumes, and networks
 - Case-insensitive searching
 - Counter updates
 - Handling empty results
 
 ### test_cleanup.bats
-Tests for cleanup functions (lib/cleanup.sh):
+Tests for cleanup functions (src/cleanup.sh):
 - Dry-run mode behavior
 - Resource cleanup operations
 - Logging of cleanup actions
