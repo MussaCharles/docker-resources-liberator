@@ -74,31 +74,6 @@ docker-resources-liberator/
 ./liberate.sh myproject --dry-run -y --log
 ```
 
-## Creating Project-Specific Wrapper Scripts
-
-You can create simple wrapper scripts for frequently cleaned projects. For example, to create a script for cleaning foo resources:
-
-### Example: `~/prune_foo_docker.sh`
-
-```bash
-#!/bin/bash
-# Wrapper script to clean foo Docker resources
-
-~/docker-resources-liberator/liberate.sh foo "$@"
-```
-
-Then make it executable:
-```bash
-chmod +x ~/prune_foo_docker.sh
-```
-
-Now you can simply run:
-```bash
-~/prune_foo_docker.sh           # Interactive mode
-~/prune_foo_docker.sh --dry-run # Preview mode
-~/prune_foo_docker.sh -y        # Auto-confirm mode
-```
-
 ## What Gets Cleaned
 
 The script searches for and removes:
