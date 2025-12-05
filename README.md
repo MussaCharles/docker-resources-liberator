@@ -165,8 +165,24 @@ Run `docker images`, `docker ps -a`, `docker volume ls`, and `docker network ls`
 
 ## License
 
-MIT License - Feel free to modify and distribute.
+This project is licensed under the [MIT License](LICENSE).
 
 ## Contributing
 
-Feel free to submit issues and pull requests for improvements!
+Contributions are welcome! Please read our [Contributing Guidelines](.github/CONTRIBUTING.md) before submitting a pull request.
+
+## Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](.github/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+## Support
+
+Need help? Check out our [Support Guide](.github/SUPPORT.md) for common issues and how to get assistance.
+
+## Security
+
+Found a vulnerability? See our [Security Policy](.github/SECURITY.md) for reporting guidelines.
+
+## Acknowledgments
+
+This project was developed with AI assistance, primarily using [Claude Code](https://claude.ai/code). While every effort has been made to review and test the code, users are encouraged to verify the behavior in their own environments. If you find any issues or have suggestions for improvement, contributions are welcome! See our [Contributing Guidelines](.github/CONTRIBUTING.md).
