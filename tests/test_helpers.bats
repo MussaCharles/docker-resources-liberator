@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 # =============================================================================
-# Tests for Helper Functions (lib/helpers.sh)
+# Tests for Helper Functions (src/helpers.sh)
 # =============================================================================
 
 # Load test helpers

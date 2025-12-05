@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 # =============================================================================
-# Tests for Cleanup Functions (lib/cleanup.sh)
+# Tests for Cleanup Functions (src/cleanup.sh)
 # =============================================================================
 
 # Load test helpers
