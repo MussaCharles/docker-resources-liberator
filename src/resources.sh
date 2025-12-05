@@ -153,4 +153,54 @@ show_resource_comparison() {
             print_line "  ${type}: ${reclaimable}"
         fi
     done
+
+    # Total space reclaimed
+    print_line ""
+    print_line "─────────────────────────────────────"
+
+    # Calculate total reclaimed from Docker resources
+    local total_reclaimed=0
+
+    # Parse before/after values and calculate difference
+    # Convert human-readable sizes to bytes for calculation
+    parse_size_to_bytes() {
+        local size="$1"
+        local num=$(echo "$size" | sed 's/[^0-9.]//g')
+        local unit=$(echo "$size" | sed 's/[0-9.]//g' | tr '[:lower:]' '[:upper:]')
+
+        case "$unit" in
+            B) echo "${num%.*}" ;;
+            KB|K) echo "$(echo "$num * 1024" | bc 2>/dev/null || echo 0)" ;;
+            MB|M) echo "$(echo "$num * 1024 * 1024" | bc 2>/dev/null || echo 0)" ;;
+            GB|G) echo "$(echo "$num * 1024 * 1024 * 1024" | bc 2>/dev/null || echo 0)" ;;
+            TB|T) echo "$(echo "$num * 1024 * 1024 * 1024 * 1024" | bc 2>/dev/null || echo 0)" ;;
+            *) echo 0 ;;
+        esac
+    }
+
+    local images_before=$(parse_size_to_bytes "${DOCKER_IMAGES_BEFORE:-0}")
+    local images_after=$(parse_size_to_bytes "${DOCKER_IMAGES_AFTER:-0}")
+    local containers_before=$(parse_size_to_bytes "${DOCKER_CONTAINERS_BEFORE:-0}")
+    local containers_after=$(parse_size_to_bytes "${DOCKER_CONTAINERS_AFTER:-0}")
+    local volumes_before=$(parse_size_to_bytes "${DOCKER_VOLUMES_BEFORE:-0}")
+    local volumes_after=$(parse_size_to_bytes "${DOCKER_VOLUMES_AFTER:-0}")
+
+    # Calculate total reclaimed (before - after for each category)
+    local images_diff=$(echo "${images_before%.*} - ${images_after%.*}" | bc 2>/dev/null || echo 0)
+    local containers_diff=$(echo "${containers_before%.*} - ${containers_after%.*}" | bc 2>/dev/null || echo 0)
+    local volumes_diff=$(echo "${volumes_before%.*} - ${volumes_after%.*}" | bc 2>/dev/null || echo 0)
+
+    total_reclaimed=$(echo "${images_diff%.*} + ${containers_diff%.*} + ${volumes_diff%.*}" | bc 2>/dev/null || echo 0)
+
+    # Convert to human readable
+    if [[ $total_reclaimed -gt 0 ]]; then
+        local total_human=$(numfmt --to=iec-i --suffix=B ${total_reclaimed%.*} 2>/dev/null || echo "${total_reclaimed} bytes")
+        print_success "Total Space Reclaimed: ${total_human}"
+    elif [[ $total_reclaimed -lt 0 ]]; then
+        local total_used=$(echo "${total_reclaimed#-}" | bc 2>/dev/null || echo 0)
+        local total_human=$(numfmt --to=iec-i --suffix=B ${total_used%.*} 2>/dev/null || echo "${total_used} bytes")
+        print_warning "Total Additional Space Used: ${total_human}"
+    else
+        print_info "Total Space Reclaimed: 0B"
+    fi
 }
