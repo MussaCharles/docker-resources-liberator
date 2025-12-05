@@ -107,6 +107,7 @@ export -f mock_docker_networks
 }
 
 @test "cleanup functions log to file" {
+    export ENABLE_LOG=true
     cleanup_containers
     grep -q "DRY RUN" "$LOG_FILE"
     grep -q "myproject" "$LOG_FILE"
