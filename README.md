@@ -74,31 +74,6 @@ docker-resources-liberator/
 ./liberate.sh myproject --dry-run -y --log
 ```
 
-## Creating Project-Specific Wrapper Scripts
-
-You can create simple wrapper scripts for frequently cleaned projects. For example, to create a script for cleaning foo resources:
-
-### Example: `~/prune_foo_docker.sh`
-
-```bash
-#!/bin/bash
-# Wrapper script to clean foo Docker resources
-
-~/docker-resources-liberator/liberate.sh foo "$@"
-```
-
-Then make it executable:
-```bash
-chmod +x ~/prune_foo_docker.sh
-```
-
-Now you can simply run:
-```bash
-~/prune_foo_docker.sh           # Interactive mode
-~/prune_foo_docker.sh --dry-run # Preview mode
-~/prune_foo_docker.sh -y        # Auto-confirm mode
-```
-
 ## What Gets Cleaned
 
 The script searches for and removes:
@@ -190,8 +165,24 @@ Run `docker images`, `docker ps -a`, `docker volume ls`, and `docker network ls`
 
 ## License
 
-MIT License - Feel free to modify and distribute.
+This project is licensed under the [MIT License](LICENSE).
 
 ## Contributing
 
-Feel free to submit issues and pull requests for improvements!
+Contributions are welcome! Please read our [Contributing Guidelines](.github/CONTRIBUTING.md) before submitting a pull request.
+
+## Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](.github/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+## Support
+
+Need help? Check out our [Support Guide](.github/SUPPORT.md) for common issues and how to get assistance.
+
+## Security
+
+Found a vulnerability? See our [Security Policy](.github/SECURITY.md) for reporting guidelines.
+
+## Acknowledgments
+
+This project was developed with AI assistance, primarily using [Claude Code](https://claude.ai/code). While every effort has been made to review and test the code, users are encouraged to verify the behavior in their own environments. If you find any issues or have suggestions for improvement, contributions are welcome! See our [Contributing Guidelines](.github/CONTRIBUTING.md).
